@@ -113,47 +113,75 @@ public final class Debug {
 	}
 
 	public static void log(int level, Throwable t, String msg, String module) {
+		if (msg == null)
+			msg = "[jdonframework]";
 		log(level, t, msg, module, "com.jdon.util.Debug");
 	}
 
 	private static void log(int level, Throwable t, String msg, String module, String callingClass) {
-		if (level >= conf_level) {
-			if (useLog4J) {
-				// logger = Logger.getLogger(module);
-				Logger logger = getLogger(module);
-				if (logger.isDebugEnabled())
-					logger.debug(msg, t);
-				else if (logger.isErrorEnabled())
-					logger.error(msg, t);
-				else if (logger.isInfoEnabled())
-					logger.info(msg, t);
-				else if (logger.isWarnEnabled())
-					logger.warn(msg, t);
-				else if (logger.isFatalEnabled())
-					logger.fatal(msg, t);
-				else if (logger.isTraceEnabled())
-					logger.trace(msg, t);
-			} else {
-				StringBuilder prefixBuf = new StringBuilder();
-				prefixBuf.append(dateFormat.format(new java.util.Date()));
-				prefixBuf.append(" [Debug");
-				if (module != null) {
-					prefixBuf.append(":");
-					prefixBuf.append(module);
-				}
-				prefixBuf.append(":");
-				prefixBuf.append(levels[level]);
-				prefixBuf.append("] ");
-				if (msg != null) {
-					getPrintStream().print(prefixBuf.toString());
-					getPrintStream().println(msg);
-				}
-				if (t != null) {
-					getPrintStream().print(prefixBuf.toString());
-					getPrintStream().println("Received throwable:");
-					t.printStackTrace(getPrintStream());
-				}
-			}
+		if (level < conf_level)
+			return;
+		if (useLog4J) {
+			uselog4j(level, t, msg, module, callingClass);
+		} else {
+			noLog4J(level, t, msg, module, callingClass);
+		}
+
+	}
+
+	private static void uselog4j(int level, Throwable t, String msg, String module, String callingClass) {
+		Logger logger = getLogger(module);
+		if (logger.isDebugEnabled())
+			logger.debug(msg, t);
+		else
+			uselog4j2(t, msg, module);
+	}
+
+	private static void uselog4j2(Throwable t, String msg, String module) {
+		Logger logger = getLogger(module);
+		if (logger.isErrorEnabled())
+			logger.error(msg, t);
+		else
+			uselog4j3(t, msg, module);
+	}
+
+	private static void uselog4j3(Throwable t, String msg, String module) {
+		Logger logger = getLogger(module);
+		if (logger.isInfoEnabled())
+			logger.info(msg, t);
+		else
+			uselog4j4(t, msg, module);
+	}
+
+	private static void uselog4j4(Throwable t, String msg, String module) {
+		Logger logger = getLogger(module);
+		if (logger.isWarnEnabled())
+			logger.warn(msg, t);
+		else if (logger.isFatalEnabled())
+			logger.fatal(msg, t);
+		else if (logger.isTraceEnabled())
+			logger.trace(msg, t);
+	}
+
+	private static void noLog4J(int level, Throwable t, String msg, String module, String callingClass) {
+		StringBuilder prefixBuf = new StringBuilder();
+		prefixBuf.append(dateFormat.format(new java.util.Date()));
+		prefixBuf.append(" [Debug");
+		if (module != null) {
+			prefixBuf.append(":");
+			prefixBuf.append(module);
+		}
+		prefixBuf.append(":");
+		prefixBuf.append(levels[level]);
+		prefixBuf.append("] ");
+		if (msg != null) {
+			getPrintStream().print(prefixBuf.toString());
+			getPrintStream().println(msg);
+		}
+		if (t != null) {
+			getPrintStream().print(prefixBuf.toString());
+			getPrintStream().println("Received throwable:");
+			t.printStackTrace(getPrintStream());
 		}
 	}
 
@@ -170,7 +198,7 @@ public final class Debug {
 	}
 
 	public static void log(Throwable t) {
-		log(Debug.ALWAYS, t, null, null);
+		log(Debug.ALWAYS, t, t.getMessage(), null);
 	}
 
 	public static void log(Throwable t, String msg) {
@@ -194,7 +222,7 @@ public final class Debug {
 	}
 
 	public static void logVerbose(Throwable t) {
-		log(Debug.VERBOSE, t, null, null);
+		log(Debug.VERBOSE, t, t.getMessage(), null);
 	}
 
 	public static void logVerbose(Throwable t, String msg) {
@@ -218,7 +246,7 @@ public final class Debug {
 	}
 
 	public static void logTiming(Throwable t) {
-		log(Debug.TIMING, t, null, null);
+		log(Debug.TIMING, t, t.getMessage(), null);
 	}
 
 	public static void logTiming(Throwable t, String msg) {
@@ -242,7 +270,7 @@ public final class Debug {
 	}
 
 	public static void logInfo(Throwable t) {
-		log(Debug.INFO, t, null, null);
+		log(Debug.INFO, t, t.getMessage(), null);
 	}
 
 	public static void logInfo(Throwable t, String msg) {
@@ -266,7 +294,7 @@ public final class Debug {
 	}
 
 	public static void logImportant(Throwable t) {
-		log(Debug.IMPORTANT, t, null, null);
+		log(Debug.IMPORTANT, t, t.getMessage(), null);
 	}
 
 	public static void logImportant(Throwable t, String msg) {
@@ -290,7 +318,7 @@ public final class Debug {
 	}
 
 	public static void logWarning(Throwable t) {
-		log(Debug.WARNING, t, null, null);
+		log(Debug.WARNING, t, t.getMessage(), null);
 	}
 
 	public static void logWarning(Throwable t, String msg) {
@@ -314,7 +342,7 @@ public final class Debug {
 	}
 
 	public static void logError(Throwable t) {
-		log(Debug.ERROR, t, null, null);
+		log(Debug.ERROR, t, t.getMessage(), null);
 	}
 
 	public static void logError(Throwable t, String msg) {
@@ -338,7 +366,7 @@ public final class Debug {
 	}
 
 	public static void logFatal(Throwable t) {
-		log(Debug.FATAL, t, null, null);
+		log(Debug.FATAL, t, t.getMessage(), null);
 	}
 
 	public static void logFatal(Throwable t, String msg) {

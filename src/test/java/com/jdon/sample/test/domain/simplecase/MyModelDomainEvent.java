@@ -23,13 +23,13 @@ import com.jdon.domain.message.DomainMessage;
 public class MyModelDomainEvent {
 
 	@Send("MyModel.findName")
-	public DomainMessage asyncFindName(MyModel myModel) {
-		return new DomainMessage(myModel);
+	public DomainMessage asyncFindName(FindNameEvent findNameEvent) {
+		return new DomainMessage(findNameEvent);
 	}
 
 	@Send("saveMyModel")
-	public DomainMessage save(MyModel myModel) {
-		return new DomainMessage(myModel);
+	public DomainMessage save(MyModelCreatedEvent myModelCreatedEvent) {
+		return new DomainMessage(myModelCreatedEvent);
 	}
 
 }

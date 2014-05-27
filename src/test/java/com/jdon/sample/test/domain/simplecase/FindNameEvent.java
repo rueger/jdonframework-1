@@ -13,13 +13,19 @@
  * limitations under the License.
  * 
  */
-package com.jdon.sample.test.domain.simplecase.dci;
+package com.jdon.sample.test.domain.simplecase;
 
-import com.jdon.domain.message.DomainMessage;
-import com.jdon.sample.test.domain.simplecase.MyModel;
+public class FindNameEvent {
 
-public interface NameFinderRole {
+	private final Long id;
 
-	public DomainMessage asyncFindName(MyModel myModel);
+	public FindNameEvent(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
+	}
 
 }

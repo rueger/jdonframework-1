@@ -1,10 +1,6 @@
-/target
+/weblib
 /jdon.log
-/lib
-/build.xml
 /classes
 /dist
-/weblib
+/lib
 /report
-/.project
-/.classpath

@@ -20,9 +20,6 @@ import junit.framework.TestCase;
 
 import com.jdon.controller.AppUtil;
 import com.jdon.domain.message.DomainMessage;
-import com.jdon.domain.model.cache.ModelCacheManager;
-import com.jdon.domain.model.cache.ModelKey;
-import com.jdon.domain.model.cache.ModelManager;
 import com.jdon.sample.test.command.AComponentIF;
 import com.jdon.sample.test.command.BModel;
 import com.jdon.sample.test.command.TestCommand;
@@ -30,7 +27,6 @@ import com.jdon.sample.test.component.BInterface;
 import com.jdon.sample.test.cqrs.AService;
 import com.jdon.sample.test.cqrs.a.AggregateRootA;
 import com.jdon.sample.test.domain.onecase.service.IServiceSample;
-import com.jdon.sample.test.domain.simplecase.MyModel;
 import com.jdon.sample.test.domain.simplecase.service.IServiceSampleTwo;
 import com.jdon.sample.test.event.AI;
 import com.jdon.sample.test.event.TestEvent;
@@ -83,7 +79,7 @@ public class SampleAppTest extends TestCase {
 	public void testDomainEvent() {
 
 		IServiceSample serviceSample = (IServiceSample) appUtil.getService("serviceSample");
-		Assert.assertEquals("hello", serviceSample.eventPointEntry("hello"));
+		Assert.assertEquals("hello-2", serviceSample.eventPointEntry("hello"));
 
 	}
 
@@ -93,15 +89,6 @@ public class SampleAppTest extends TestCase {
 		String res = (String) serviceSample.eventPointEntry();
 		System.out.print(res);
 		Assert.assertEquals(res, "Synchronous sayHello and Asynchronous eventMessage=100");
-
-	}
-
-	public void testDCIDomainEvent() {
-
-		IServiceSampleTwo serviceSample = (IServiceSampleTwo) appUtil.getService("serviceSampleTwo");
-		String res = (String) serviceSample.nameFinderContext();
-		System.out.print(res);
-		Assert.assertEquals(res, "Asynchronous eventMessage=100");
 
 	}
 
@@ -141,23 +128,20 @@ public class SampleAppTest extends TestCase {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		AppUtil appUtil = new AppUtil();
-		ModelCacheManager modelCacheManager = (ModelCacheManager) appUtil.getComponentInstance("modelCacheManager");
-		MyModel myModel = new MyModel();
-		myModel.setId(new Long(123));
-		myModel.setName("test");
-		modelCacheManager.saveCache(myModel.getId(), MyModel.class.getName(), myModel);
-		if (modelCacheManager.containInCache(myModel.getId(), MyModel.class.getName()))
-			System.out.print("ok");
-		else
-			System.out.print("no");
+		SampleAppTest sampleAppTest = new SampleAppTest();
+		try {
+			sampleAppTest.setUp();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		sampleAppTest.testCommand();
 
-		ModelManager modelManager = (ModelManager) appUtil.getComponentInstance("modelManager");
-		ModelKey modelKey = new ModelKey(myModel.getId(), MyModel.class);
-		if (modelManager.containInCache(modelKey))
-			System.out.print("ok");
-		else
-			System.out.print("no");
+		sampleAppTest.testCQRS();
+		sampleAppTest.testDomainEvent();
+		sampleAppTest.testDomainEventSimple();
+		sampleAppTest.testEvent();
+		sampleAppTest.testOnEvent();
+		sampleAppTest.testGetService();
 
 	}
 
@@ -165,4 +149,5 @@ public class SampleAppTest extends TestCase {
 		super.tearDown();
 		appUtil.clear();
 	}
+
 }

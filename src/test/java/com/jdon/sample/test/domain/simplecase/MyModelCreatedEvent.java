@@ -13,24 +13,25 @@
  * limitations under the License.
  * 
  */
-package com.jdon.sample.test.domain.simplecase.dci;
+package com.jdon.sample.test.domain.simplecase;
 
-import com.jdon.annotation.Component;
-import com.jdon.domain.dci.RoleAssigner;
-import com.jdon.sample.test.domain.simplecase.MyModel;
+public class MyModelCreatedEvent {
 
-@Component
-public class NameFinderContext {
-	private final RoleAssigner roleAssigner;
+	private final Long id;
+	private final String name;
 
-	public NameFinderContext(RoleAssigner roleAssigner) {
+	public MyModelCreatedEvent(Long id, String name) {
 		super();
-		this.roleAssigner = roleAssigner;
+		this.id = id;
+		this.name = name;
 	}
 
-	public Object interact(MyModel myModel, NameFinderRole role) {
-		NameFinderRole r = (NameFinderRole) roleAssigner.assign(myModel, role);
-		return r.asyncFindName(myModel);
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

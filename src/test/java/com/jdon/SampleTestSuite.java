@@ -13,19 +13,20 @@
  * limitations under the License.
  * 
  */
-package com.jdon.sample.test.domain.simplecase.dci;
+package com.jdon;
 
-import com.jdon.annotation.Introduce;
-import com.jdon.annotation.model.Send;
-import com.jdon.domain.message.DomainMessage;
-import com.jdon.sample.test.domain.simplecase.MyModel;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
-@Introduce("message")
-public class NameFinderRoleEventsImp implements NameFinderRole {
-
-	@Send("MyModel.findName")
-	public DomainMessage asyncFindName(MyModel myModel) {
-		return new DomainMessage(myModel);
+public class SampleTestSuite extends TestSuite {
+	public static Test suite() {
+		TestSuite suite = new TestSuite("TestSuite Test");
+		suite.addTestSuite(SampleAppTest.class);
+		return suite;
 	}
 
+	public static void main(String args[]) {
+		TestRunner.run(suite());
+	}
 }
