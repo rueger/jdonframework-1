@@ -4,3 +4,10 @@
 /dist
 /lib
 /report
+bin
+build
+.gradle
+.settings
+.classpath
+.gitignore
+.project
