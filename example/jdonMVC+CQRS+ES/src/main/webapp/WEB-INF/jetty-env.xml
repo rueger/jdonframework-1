@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure id='wac' class="org.eclipse.jetty.webapp.WebAppContext">
+        <New id="myds" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>jdbc/myds</Arg>
+		<Arg><New class="org.apache.commons.dbcp.BasicDataSource">
+				<Set name="driverClassName">org.h2.Driver</Set>
+				<Set name="url">jdbc:h2:tcp://localhost/~/test</Set>
+				<Set name="username">sa</Set>
+				<Set name="password"></Set>
+				<Set name="maxActive">10</Set>
+		     </New></Arg>
+	</New>
+</Configure> 
