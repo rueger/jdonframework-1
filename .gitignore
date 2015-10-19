@@ -10,4 +10,4 @@ build
 .settings
 .classpath
 .project
-jdon.log
+main/jdon.log
