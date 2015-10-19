@@ -1,13 +1,13 @@
-/weblib
-jdon.log
 /classes
 /dist
 /lib
 /report
 bin
 build
+.gitignore
+*.log
 .gradle
 .settings
 .classpath
-.gitignore
 .project
+jdon.log
