@@ -1,7 +1,3 @@
-/classes
-/dist
-/lib
-/report
 bin
 build
 .gitignore
