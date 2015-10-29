@@ -36,7 +36,8 @@ import com.jdon.framework.test.repository.UploadRepository;
 import com.jdon.model.query.JdbcTemp;
 import com.jdon.util.Debug;
 
-@Component("uploadRepository")
+//@Component("uploadRepository")
+@Component
 public class UploadFileDaoSql implements UploadRepository {
 	private final static Logger logger = Logger.getLogger(UploadFileDaoSql.class);
 

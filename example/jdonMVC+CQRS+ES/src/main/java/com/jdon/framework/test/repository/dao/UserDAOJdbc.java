@@ -36,7 +36,8 @@ import com.jdon.model.query.JdbcTemp;
  * @author <a href="mailto:banqiao@jdon.com">banq</a>
  * 
  */
-@Component("userRepository")
+//@Component("userRepository")
+@Component
 @Introduce("modelCache")
 public class UserDAOJdbc implements UserRepository {
 
