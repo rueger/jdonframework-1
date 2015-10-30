@@ -18,11 +18,16 @@
         username:<input type="text" name="user.username" value="${user.username}"/>
         email:<input type="text" name="user.email" value="${user.email}"/>
         <br>
+        <input type="submit" value="submit"/>
+    </form>
+    
+    <form action="${pageContext.request.contextPath}/showUpload/${user.userId}" method="post">
+        <input type="hidden" name="_method" value="DELETE" />
         <c:if test="${not empty  user.uploadFile}">
         	  pic :<img src="<%=request.getContextPath() %>/showUpload?pid=${user.userId}"  border='0'/>	
         </c:if>
-
-        <input type="submit" value="submit"/>
+        <input type="submit" value="删除图片" />
+        
     </form>
 </div>
 </body>

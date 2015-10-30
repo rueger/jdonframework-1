@@ -18,15 +18,21 @@ package com.jdon.framework.test.event.domain.subscriber;
 import com.jdon.annotation.Component;
 import com.jdon.annotation.model.OnEvent;
 import com.jdon.framework.test.domain.UploadFile;
+import com.jdon.framework.test.domain.event.UploadDeletedEvent;
 import com.jdon.framework.test.repository.UploadRepository;
+import com.jdon.framework.test.repository.UserRepository;
 
 @Component
 public class UploadFileHandler {
 	private final UploadRepository uploadRepository;
+	
+	
 
 	public UploadFileHandler(UploadRepository uploadRepository) {
 		super();
 		this.uploadRepository = uploadRepository;
+		
+		
 	}
 
 	@OnEvent("saveUpload")
@@ -38,6 +44,19 @@ public class UploadFileHandler {
 	@OnEvent("loadUploadFile")
 	public UploadFile getUploadFile(String parentId) {
 		return uploadRepository.getUploadFile(parentId);
+	}
+	
+	@OnEvent("deleteUpload")
+	public void deleteUpload(UploadDeletedEvent event){
+		try {
+		    
+			//userRepository.
+			uploadRepository.deleteUploadFile(event.getUserId());
+		    
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

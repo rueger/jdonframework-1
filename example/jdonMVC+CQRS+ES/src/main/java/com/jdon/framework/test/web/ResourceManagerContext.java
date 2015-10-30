@@ -30,6 +30,7 @@ import com.jdon.domain.dci.RoleAssigner;
 import com.jdon.framework.test.domain.UploadFile;
 import com.jdon.framework.test.domain.UserModel;
 import com.jdon.framework.test.domain.command.UpdateCommand;
+import com.jdon.framework.test.domain.event.UploadDeletedEvent;
 import com.jdon.framework.test.domain.event.UserCreatedEvent;
 import com.jdon.framework.test.domain.event.UserDeletedEvent;
 import com.jdon.framework.test.domain.vo.UploadVO;
@@ -153,6 +154,17 @@ public class ResourceManagerContext {
 	public Represent delete(UserModel user) {
 		UserModel oldUser = this.getUser(user.getUserId());
 		oldUser.es.deleted(new UserDeletedEvent(user.getUserId()));
+		return new State("/result.jsp");
+	}
+	
+	@Path("/showUpload/{user.userId}")
+	@DELETE
+	public Represent deleteUpload(UserModel user) {
+		UserModel oldUser = this.getUser(user.getUserId());
+		
+		oldUser.getAttachment().setUploadFile(null); //TODO
+		
+		oldUser.es.deleteUpload(new UploadDeletedEvent(user.getUserId()));
 		return new State("/result.jsp");
 	}
 }
