@@ -162,7 +162,9 @@ public class ResourceManagerContext {
 	public Represent deleteUpload(UserModel user) {
 		UserModel oldUser = this.getUser(user.getUserId());
 		
-		oldUser.getAttachment().setUploadFile(null); //TODO
+		oldUser.getAttachment().setUploadFile(null);
+		oldUser.getAttachment().picSetNull();
+		
 		
 		oldUser.es.deleteUpload(new UploadDeletedEvent(user.getUserId()));
 		return new State("/result.jsp");

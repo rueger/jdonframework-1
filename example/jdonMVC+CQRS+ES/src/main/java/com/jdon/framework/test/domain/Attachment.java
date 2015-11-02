@@ -67,5 +67,12 @@ public class Attachment extends LazyLoader {
 	public void setUploadFile(UploadFile uploadFile) {
 		this.uploadFile = uploadFile;
 	}
+	
+	public void picSetNull() {
+		uploadFile = null;
+		noProfilepic = true;
+	}
+	
+	
 
 }
