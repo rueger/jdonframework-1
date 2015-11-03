@@ -1,4 +1,4 @@
-增加用户编辑时的删除图片功能
+feature-01: 增加用户编辑时的删除图片功能
 
 1、需求变化
    1.1 git变化：
@@ -48,5 +48,25 @@
          </c:if>
         <input type="submit" value="删除图片" />
     </form>
-   
     
+=============================================================================================================================
+fixbug-01:   saveUpload(UploadVO event) 变成了 save(UploadFile uploadFile)
+
+bug起源：   
+   
+   @Send("saveUpload")
+   public DomainMessage saveUpload(UploadVO event) {
+     return new DomainMessage(event);
+   }
+   
+   @OnEvent("saveUpload")
+   public void save(UploadFile uploadFile) {
+     uploadRepository.deleteUploadFile(uploadFile.getParentId());
+     uploadRepository.createUploadFile(uploadFile);
+   }
+
+   详见：http://www.jdon.com/47656
+   
+bug修复：
+
+   
