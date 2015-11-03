@@ -69,4 +69,9 @@ bug起源：
    
 bug修复：
 
+   git checkout -b fixbug-01，修复将在分支fixbug-01上进行
+   
+   1、领域变化
+   
+
    
