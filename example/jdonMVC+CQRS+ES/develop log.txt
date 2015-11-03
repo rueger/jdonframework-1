@@ -1,0 +1,52 @@
+增加用户编辑时的删除图片功能
+
+1、需求变化
+   1.1 git变化：
+       git checkout -b develop
+       git checkout -b feature-01
+       说明：增加用户编辑时的删除图片功能将在feature-01分支进行，完成时再合并到develop分支（git checkout develop git merge --no-ff feature-x），
+             删除feature-01分支，
+             再合并到master分支中。
+   1.2 需求变化前的现状：
+       在用户EDIT （http://localhost:8080/jdonmvc_cqrs_es-1.0/user/3）中的图片能显示，不能删除
+   1.3 需求变化后的要求：
+       增加一个图片的删除功能，点击可以删除图片包括数据库中的图片  
+
+2、REST变化
+        @Path("/showUpload/{user.userId}")
+	@DELETE
+	public Represent deleteUpload(UserModel user) {
+		UserModel oldUser = this.getUser(user.getUserId());
+		
+		oldUser.getAttachment().setUploadFile(null);
+		oldUser.getAttachment().picSetNull();
+		
+		oldUser.es.deleteUpload(new UploadDeletedEvent(user.getUserId()));
+		return new State("/result.jsp");
+	}
+
+3、领域变化
+         public class Attachment
+         public void picSetNull() {
+		uploadFile = null;
+		noProfilepic = true;
+	 }
+
+4、事件变化
+   4.1 事件消息  : 增加了一个public class UploadDeletedEvent
+   4.2 事件发生器：public class EventSourcing   +	@Send("deleteUpload")
+   4.3 事件处理器：public class UploadFileHandler +	@OnEvent("deleteUpload")
+5、仓储变化
+   无变化
+
+6、界面变化
+   eidtUser.jep中增加如下：
+    <form action="${pageContext.request.contextPath}/showUpload/${user.userId}" method="post">
+        <input type="hidden" name="_method" value="DELETE" />
+         <c:if test="${not empty  user.uploadFile}">
+         	  pic :<img src="<%=request.getContextPath() %>/showUpload?pid=${user.userId}"  border='0'/>	
+         </c:if>
+        <input type="submit" value="删除图片" />
+    </form>
+   
+    

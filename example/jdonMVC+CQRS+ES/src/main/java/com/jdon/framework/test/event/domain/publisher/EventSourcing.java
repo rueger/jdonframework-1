@@ -18,6 +18,7 @@ package com.jdon.framework.test.event.domain.publisher;
 import com.jdon.annotation.Introduce;
 import com.jdon.annotation.model.Send;
 import com.jdon.domain.message.DomainMessage;
+import com.jdon.framework.test.domain.event.UploadDeletedEvent;
 import com.jdon.framework.test.domain.event.UserCreatedEvent;
 import com.jdon.framework.test.domain.event.UserDeletedEvent;
 import com.jdon.framework.test.domain.event.UserUpdatedEvent;
@@ -43,6 +44,11 @@ public class EventSourcing {
 
 	@Send("saveUpload")
 	public DomainMessage saveUpload(UploadVO event) {
+		return new DomainMessage(event);
+	}
+
+	@Send("deleteUpload")
+	public DomainMessage deleteUpload(UploadDeletedEvent event) {
 		return new DomainMessage(event);
 	}
 }
