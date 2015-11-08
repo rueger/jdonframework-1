@@ -15,27 +15,28 @@
  */
 package com.jdon.framework.test.domain.command;
 
+import com.jdon.framework.test.domain.UploadFile;
 import com.jdon.framework.test.domain.UserModel;
-import com.jdon.framework.test.domain.vo.UploadVO;
+//import com.jdon.framework.test.domain.vo.UploadVO;
 
 public class UpdateCommand {
 
 	private final UserModel newUserDTO;
 
-	private final UploadVO uploadVO;
+	private final UploadFile uploadFile;
 
-	public UpdateCommand(UserModel newUserDTO, UploadVO uploadVO) {
+	public UpdateCommand(UserModel newUserDTO, UploadFile uploadFile) {
 		super();
 		this.newUserDTO = newUserDTO;
-		this.uploadVO = uploadVO;
+		this.uploadFile = uploadFile;
 	}
 
 	public UserModel getNewUserDTO() {
 		return newUserDTO;
 	}
 
-	public UploadVO getUploadVO() {
-		return uploadVO;
+	public UploadFile getUploadFile() {
+		return uploadFile;
 	}
 
 }

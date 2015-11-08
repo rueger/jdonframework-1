@@ -20,7 +20,7 @@ import com.jdon.annotation.model.Inject;
 import com.jdon.annotation.model.OnCommand;
 import com.jdon.framework.test.domain.command.UpdateCommand;
 import com.jdon.framework.test.domain.event.UserUpdatedEvent;
-import com.jdon.framework.test.domain.vo.UploadVO;
+//import com.jdon.framework.test.domain.vo.UploadVO;
 import com.jdon.framework.test.event.domain.publisher.EventSourcing;
 import com.jdon.framework.test.event.domain.publisher.LazyLoaderRole;
 
@@ -61,7 +61,7 @@ public class UserModel {
 		this.email = updateCommand.getNewUserDTO().getEmail();
 		this.es.updated(new UserUpdatedEvent(updateCommand.getNewUserDTO()));
 
-		this.setUploadFile(updateCommand.getUploadVO());
+		this.setUploadFile(updateCommand.getUploadFile());
 	}
 
 	public void setUserId(String userId) {
@@ -122,13 +122,13 @@ public class UserModel {
 		return getAttachment().getUploadFile();
 	}
 
-	public void setUploadFile(UploadVO event) {
+	public void setUploadFile(UploadFile event) {
 		es.saveUpload(event);
-		UploadFile uploadFile = new UploadFile();
-		uploadFile.setData(event.getFilesData());
-		uploadFile.setContentType(event.getContextType());
-		uploadFile.setName(event.getFilename());
-		getAttachment().setUploadFile(uploadFile);
+		//UploadFile uploadFile = new UploadFile();
+		//uploadFile.setData(event.getFilesData());
+		//uploadFile.setContentType(event.getContextType());
+		//uploadFile.setName(event.getFilename());
+		getAttachment().setUploadFile(event);
 
 	}
 }
