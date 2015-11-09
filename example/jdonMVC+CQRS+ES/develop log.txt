@@ -70,8 +70,62 @@ bug起源：
 bug修复：
 
    git checkout -b fixbug-01，修复将在分支fixbug-01上进行
+
+
+   1、REST变化
+    		UserModel oldUser = this.getUser(user.getUserId());
+ 		FormFile file = (FormFile) request.getSession().getAttribute("formFile");
+-		UploadVO uploadVO = null;
++		//UploadVO uploadVO = null;
++		//if (file != null) {
++		//	uploadVO = new UploadVO(file.getFileName(), file.getFileData(), file.getContentType());
++		//}
++		UploadFile uploadFile = new UploadFile();
+ 		if (file != null) {
+-			uploadVO = new UploadVO(file.getFileName(), file.getFileData(), file.getContentType());
++			uploadFile.setParentId(oldUser.getUserId());
++			uploadFile.setData(file.getFileData());
++			uploadFile.setName(file.getFileName());
++			uploadFile.setContentType(file.getContentType());
++			uploadFile.setDescription(file.getFileName() + " description");
++			uploadFile.setSize(file.getFileSize());
++			
+ 		}
+ 
+-		commandHandler.saveUser(oldUser, new UpdateCommand(user, uploadVO));
++		commandHandler.saveUser(oldUser, new UpdateCommand(user, uploadFile));
+ 		return new State("/result.jsp");
+ 	}
+ 	   
+   2、领域变化
+   2.1
+   public void setUploadFile(UploadFile event) {
+ 		es.saveUpload(event);
+
+ 		getAttachment().setUploadFile(event);
+   }
    
-   1、领域变化
+   2.2
+   public class UpdateCommand {
+     private final UserModel newUserDTO;
+     private final UploadFile uploadFile;
+      
+   3、事件变化
+   3.1 事件发送器
+   @Send("saveUpload")
+-	public DomainMessage saveUpload(UploadVO event) {
++	public DomainMessage saveUpload(UploadFile event) {
+ 		return new DomainMessage(event);
+ 	}
+   
+   4、仓储变化
+   无变化
+   
+   5、界面变化
+   editUser.jsp
+   +        <a href="${pageContext.request.contextPath}/single_upload.jsp" target="_blank">更换图片</a>
    
 
-   
+================================================================================================================ 	
+feature-02: 持久层换用ibatis
+
