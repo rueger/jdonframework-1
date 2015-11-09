@@ -33,7 +33,6 @@ import com.jdon.framework.test.domain.command.UpdateCommand;
 import com.jdon.framework.test.domain.event.UploadDeletedEvent;
 import com.jdon.framework.test.domain.event.UserCreatedEvent;
 import com.jdon.framework.test.domain.event.UserDeletedEvent;
-import com.jdon.framework.test.domain.vo.UploadVO;
 import com.jdon.framework.test.query.UserQuery;
 import com.jdon.framework.test.repository.EntityFactory;
 import com.jdon.mvc.annotations.In;
@@ -140,12 +139,22 @@ public class ResourceManagerContext {
 
 		UserModel oldUser = this.getUser(user.getUserId());
 		FormFile file = (FormFile) request.getSession().getAttribute("formFile");
-		UploadVO uploadVO = null;
+		//UploadVO uploadVO = null;
+		//if (file != null) {
+		//	uploadVO = new UploadVO(file.getFileName(), file.getFileData(), file.getContentType());
+		//}
+		UploadFile uploadFile = new UploadFile();
 		if (file != null) {
-			uploadVO = new UploadVO(file.getFileName(), file.getFileData(), file.getContentType());
+			uploadFile.setParentId(oldUser.getUserId());
+			uploadFile.setData(file.getFileData());
+			uploadFile.setName(file.getFileName());
+			uploadFile.setContentType(file.getContentType());
+			uploadFile.setDescription(file.getFileName() + " description");
+			uploadFile.setSize(file.getFileSize());
+			
 		}
 
-		commandHandler.saveUser(oldUser, new UpdateCommand(user, uploadVO));
+		commandHandler.saveUser(oldUser, new UpdateCommand(user, uploadFile));
 		return new State("/result.jsp");
 	}
 
