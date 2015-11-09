@@ -23,7 +23,7 @@ import com.jdon.framework.test.domain.event.UploadDeletedEvent;
 import com.jdon.framework.test.domain.event.UserCreatedEvent;
 import com.jdon.framework.test.domain.event.UserDeletedEvent;
 import com.jdon.framework.test.domain.event.UserUpdatedEvent;
-//import com.jdon.framework.test.domain.vo.UploadVO;
+
 
 @Introduce("message")
 public class EventSourcing {

@@ -17,7 +17,6 @@ package com.jdon.framework.test.domain.command;
 
 import com.jdon.framework.test.domain.UploadFile;
 import com.jdon.framework.test.domain.UserModel;
-//import com.jdon.framework.test.domain.vo.UploadVO;
 
 public class UpdateCommand {
 
