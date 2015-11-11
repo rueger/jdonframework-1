@@ -38,7 +38,9 @@ dependencies {
     compile group: 'log4j', name: 'log4j', version:'1.2.4'
     compile group: 'jstl', name: 'jstl', version:'1.2'
     compile group: 'org.jdon', name: 'jdonframework', version:'6.8'
-    compile group: 'com.jdon', name: 'jdon-jdbc', version:'6.6.4'
+  //compile group: 'com.jdon', name: 'jdon-jdbc', version:'6.6.4'
+  //compile group: 'com.ibatis', name: 'ibatis-sqlmap', version:'2.1.0.565'
+    compile group: 'org.mybatis', name: 'mybatis', version:'3.3.0'
     compile group: 'commons-pool', name: 'commons-pool', version:'1.6'
     testCompile group: 'junit', name: 'junit', version:'3.8.1'
     
