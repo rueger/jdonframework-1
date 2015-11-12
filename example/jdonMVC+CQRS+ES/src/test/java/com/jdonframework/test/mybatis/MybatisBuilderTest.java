@@ -26,7 +26,7 @@ public class MybatisBuilderTest extends TestCase {
 		
 		AppUtil appUtil = new AppUtil();
 		
-		appUtil.getComponentInstance("SqlSessionFactory");
+		appUtil.getComponentInstance("TestSqlSessionFactory");
 		
 		System.out.println("sqlSessionFactory ok ");
 		
@@ -37,7 +37,7 @@ public class MybatisBuilderTest extends TestCase {
 		
 		AppUtil appUtil = new AppUtil();
 		
-		MybatisBuilder mybatisBuilder = (MybatisBuilder) appUtil.getComponentInstance("SqlSessionFactory");
+		TestMybatisBuilder mybatisBuilder = (TestMybatisBuilder) appUtil.getComponentInstance("TestSqlSessionFactory");
 		
 		SqlSessionFactory sqlSessionFactory = mybatisBuilder.getSqlSessionFactory();
 		
