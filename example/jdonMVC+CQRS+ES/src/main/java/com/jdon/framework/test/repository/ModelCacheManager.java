@@ -39,7 +39,7 @@ public class ModelCacheManager implements Startable {
 	public ModelCacheManager(CacheManager cacheManager, Constants constants, ModelManager modelManager) {
 		try {
 			Context ic = new InitialContext();
-			this.dataSource = (DataSource) ic.lookup(constants.getJndiname());
+			//this.dataSource = (DataSource) ic.lookup(constants.getJndiname());
 			//this.pageIteratorSolverOfUser = new PageIteratorSolver(dataSource, cacheManager);
 		} catch (NamingException e) {
 			e.printStackTrace();
