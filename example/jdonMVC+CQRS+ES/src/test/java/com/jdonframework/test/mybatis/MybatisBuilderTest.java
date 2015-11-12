@@ -11,6 +11,18 @@ import junit.framework.TestCase;
 
 public class MybatisBuilderTest extends TestCase {
 	
+	/* 数据库定义
+	 * create table testuser (
+       userId           char(20) not null,
+       name             varchar(20) null,
+       age              int(5) default NULL,
+       PRIMARY KEY  (userId)
+       );
+       INSERT INTO testuser VALUES ('1', 'tony','11');
+       INSERT INTO testuser VALUES ('2', 'sunny','12');
+       INSERT INTO testuser VALUES ('3', 'kevin','13');
+	 */
+	
 	SqlSessionFactory sqlSessionFactory;
 	
 	public static void main(String[] args) {
@@ -66,7 +78,7 @@ public class MybatisBuilderTest extends TestCase {
 	
 	
 	public void testSelectUserByID() {
-		
+	
 		AppUtil appUtil = new AppUtil();
 
 		TestMybatisBuilder mybatisBuilder = (TestMybatisBuilder) appUtil.getComponentInstance("TestSqlSessionFactory");
@@ -83,9 +95,13 @@ public class MybatisBuilderTest extends TestCase {
         session.close();
         }
 		
-		System.out.println("user.Userid = " + user.getUserId());
+		System.out.println("userId = " + user.getUserId());
 		
-		System.out.println("user.username = " + user.getUsername());
+		System.out.println("username = " + user.getUsername());
+		
+		Assert.assertEquals(user.getUserId(), "1");
+		
+		Assert.assertEquals(user.getUsername(), "tony");
 		
 		System.out.println("testSelectUserByID() ok ");
 		
