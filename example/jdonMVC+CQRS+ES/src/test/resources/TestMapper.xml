@@ -3,13 +3,21 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.jdon.framework.test.user">
+<mapper namespace="com.jdonframework.test.user">
+ 
+  <resultMap id="userResultMap" type="User">
+     <id property="userId" column="USERID" />
+     <result property="username" column="NAME"/>
+  </resultMap>
+ 
   <select id="selectuseridbyid" resultType="String">
     select userId from testuser where userId = #{id}
   </select>
   
-  <select id="selectuserid" resultType="String">
-    select userId from testuser
+  <select id="selectuserbyid" resultMap="userResultMap">
+     select USERID,NAME 
+     from testuser 
+     where userId = #{id}
   </select>
   
 </mapper>

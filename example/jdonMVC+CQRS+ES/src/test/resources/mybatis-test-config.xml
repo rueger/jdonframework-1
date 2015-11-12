@@ -5,6 +5,9 @@
 <configuration>
   <properties resource="config-test.properties">
   </properties>
+  <typeAliases>
+     <typeAlias type="com.jdon.framework.test.domain.UserModel" alias="User"/>
+  </typeAliases>
   <environments default="test">
     <environment id="test">
       <transactionManager type="JDBC"/>
