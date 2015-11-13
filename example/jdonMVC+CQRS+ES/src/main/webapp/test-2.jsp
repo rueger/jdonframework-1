@@ -15,32 +15,32 @@
 <title>testSqlSessionFactory</title>
 </head>
 <body>
-<%      
-Context ctx = new InitialContext();
-Context envCtx = (Context) ctx.lookup("java:comp/env");
-DataSource ds = (DataSource) envCtx.lookup("jdbc/myds");
+<%
+	Context ctx = new InitialContext();
+    Context envCtx = (Context) ctx.lookup("java:comp/env");
+    DataSource ds = (DataSource) envCtx.lookup("jdbc/myds");
 
-TransactionFactory transactionFactory = new JdbcTransactionFactory();
-Environment environment = new Environment("development", transactionFactory, ds);
-Configuration configuration = new Configuration(environment);
-configuration.addMapper(IFtest.class);
-SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
-
-
-SqlSession sqlsession = sqlSessionFactory.openSession();
+    TransactionFactory transactionFactory = new JdbcTransactionFactory();
+    Environment environment = new Environment("development", transactionFactory, ds);
+    Configuration configuration = new Configuration(environment);
+    configuration.addMapper(test2jspIF.class);
+    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 
 
-String userid;
+    SqlSession sqlsession = sqlSessionFactory.openSession();
 
-try {
-	IFtest mapper = sqlsession.getMapper(IFtest.class);  
-	userid = (String) mapper.selectUserId(1);
-} finally {
-  sqlsession.close();
-}
 
-out.println("userid = " + userid);
+    String userid;
 
+    try {
+	   test2jspIF mapper = sqlsession.getMapper(test2jspIF.class);  
+	   userid = (String) mapper.selectUserId(1);
+    } finally {
+      sqlsession.close();
+    }
+
+    out.println("userid = " + userid);
+    
 %>
 </body>
 </html>
