@@ -15,6 +15,10 @@
  */
 package com.jdon.framework.test.repository;
 
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Select;
+
 import com.jdon.framework.test.domain.UserModel;
 
 public interface UserRepository {
@@ -25,6 +29,11 @@ public interface UserRepository {
 
 	public abstract void delete(String userId) throws Exception;
 
+	@Results({
+			  @Result(property = "userId", column = "USERID", id = true),
+			  @Result(property = "username", column = "NAME"),
+			})
+	@Select("select * from testuser where userId = #{id}")
 	public abstract UserModel getUser(String Id);
 
 }

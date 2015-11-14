@@ -7,6 +7,8 @@ import javax.ws.rs.core.Context;
 import org.apache.ibatis.session.SqlSession;
 
 import com.jdon.framework.test.test2jspIF;
+import com.jdon.framework.test.domain.UserModel;
+import com.jdon.framework.test.repository.UserRepository;
 import com.jdon.framework.test.repository.dao.MybatisSqlSessionFactory;
 import com.jdon.mvc.annotations.In;
 import com.jdon.mvc.ioc.BeanType;
@@ -67,5 +69,21 @@ public class TestContext {
 	    
 		
 		return new Text(username);
+	}
+	
+	@Path("/test4")
+	public Represent test4() {
+		SqlSession sqlsession = mybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		
+		UserModel user;
+		
+		try {
+			   UserRepository mapper = sqlsession.getMapper(UserRepository.class);  
+			   user = (UserModel) mapper.getUser("1");
+		    } finally {
+		      sqlsession.close();
+		    }
+		
+		return new Text("user.userId = " + user.getUserId() + " user.username = " + user.getUsername());
 	}
 }
