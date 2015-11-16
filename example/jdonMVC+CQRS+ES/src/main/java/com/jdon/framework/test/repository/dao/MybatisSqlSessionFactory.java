@@ -18,6 +18,7 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import com.jdon.annotation.Component;
 import com.jdon.framework.test.Constants;
 import com.jdon.framework.test.test2jspIF;
+import com.jdon.framework.test.query.QueryIF;
 import com.jdon.framework.test.repository.UserRepository;
 
 @Component("sqlSessionFactory")
@@ -42,8 +43,11 @@ public class MybatisSqlSessionFactory{
 			TransactionFactory transactionFactory = new JdbcTransactionFactory();
 			Environment environment = new Environment("development", transactionFactory, dataSource);
 			Configuration configuration = new Configuration(environment);
+			
 			configuration.addMapper(test2jspIF.class);
 			configuration.addMapper(UserRepository.class);
+			configuration.addMapper(QueryIF.class);
+			
 			this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 			
 		}catch (NamingException e) {

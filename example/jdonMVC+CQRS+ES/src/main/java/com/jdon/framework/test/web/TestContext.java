@@ -1,5 +1,8 @@
 package com.jdon.framework.test.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
@@ -8,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.jdon.framework.test.test2jspIF;
 import com.jdon.framework.test.domain.UserModel;
+import com.jdon.framework.test.query.QueryIF;
 import com.jdon.framework.test.repository.UserRepository;
 import com.jdon.framework.test.repository.dao.MybatisSqlSessionFactory;
 import com.jdon.mvc.annotations.In;
@@ -85,5 +89,28 @@ public class TestContext {
 		    }
 		
 		return new Text("user.userId = " + user.getUserId() + " user.username = " + user.getUsername());
+	}
+	
+	@Path("/test5")
+	public Represent test5() {
+		SqlSession sqlsession = mybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		
+		List<String> userIdlist = new ArrayList();
+		String userId = "";
+		
+		try {
+			   QueryIF mapper = sqlsession.getMapper(QueryIF.class);  
+			   userIdlist = mapper.getUsersId();
+		} finally {
+		      sqlsession.close();
+		}
+		
+		for (Object o : userIdlist) {
+			
+			userId = userId + " " + (String) o;
+				
+		}
+		
+		return new Text(userId);
 	}
 }
