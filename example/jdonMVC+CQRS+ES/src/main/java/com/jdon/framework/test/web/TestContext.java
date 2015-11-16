@@ -121,15 +121,52 @@ public class TestContext {
 	@Path("/test6")
 	public Represent test6() {
 		
-		System.out.println("test6");
+		//System.out.println("test6");
 		
 		List<UserModel> userList = userQuery.getUserList();
 		
-		
 		return new Html("/WEB-INF/index.jsp", "userList", userList);
+				
+	}
+	
+	@Path("/test7")
+	public Represent test7() throws Exception {
+	
+		System.out.println("test7");
+		
+		UserModel user = new UserModel();
+		String userId = Integer.toString(user.hashCode());
+		user.setUserId(userId);
+		user.setUsername("bytest7");
+		
+		SqlSession sqlsession = mybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		
+		try {
+			   UserRepository mapper = sqlsession.getMapper(UserRepository.class);  
+			   mapper.save(user);
+		} finally {
+		       sqlsession.close();
+		}
+		
+		return new Text("test7 ok");
+	}
+	
+	@Path("/test8")
+	public Represent test8() throws Exception {
+		
+		System.out.println("test8");
+		
+		SqlSession sqlsession = mybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		
+		try {
+			   UserRepository mapper = sqlsession.getMapper(UserRepository.class);  
+			   mapper.delete("2");
+		} finally {
+		       sqlsession.close();
+		}
 		
 		
-		
+		return new Text("test8 ok");
 	}
 	
 }

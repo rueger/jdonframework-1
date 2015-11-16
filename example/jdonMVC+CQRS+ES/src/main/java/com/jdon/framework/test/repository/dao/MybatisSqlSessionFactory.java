@@ -14,6 +14,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 
 import com.jdon.annotation.Component;
 import com.jdon.framework.test.Constants;
@@ -38,7 +39,7 @@ public class MybatisSqlSessionFactory{
 			Context ic = new InitialContext();
 			DataSource dataSource = (DataSource) ic.lookup(constants.getJndiname());
 			
-			TransactionFactory transactionFactory = new JdbcTransactionFactory();
+			TransactionFactory transactionFactory = new ManagedTransactionFactory();
 			Environment environment = new Environment("development", transactionFactory, dataSource);
 			Configuration configuration = new Configuration(environment);
 			
