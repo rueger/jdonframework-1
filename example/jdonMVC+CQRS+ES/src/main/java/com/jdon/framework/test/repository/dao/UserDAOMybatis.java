@@ -66,31 +66,56 @@ public class UserDAOMybatis implements UserRepository {
 
 	public void save(UserModel userTest) throws Exception {
 		logger.debug(" enter insert ");
-		String sql = "INSERT INTO testuser (userId , name) " + "VALUES (?, ?)";
+		//String sql = "INSERT INTO testuser (userId , name) " + "VALUES (?, ?)";
 
-		List queryParams = new ArrayList();
-		queryParams.add(userTest.getUserId());
-		queryParams.add(userTest.getUsername());
+		//List queryParams = new ArrayList();
+		//queryParams.add(userTest.getUserId());
+		//queryParams.add(userTest.getUsername());
+		
+		SqlSession sqlsession = sqlSessionFactory.openSession();
+		
+		try {
+			   UserRepository mapper = sqlsession.getMapper(UserRepository.class);  
+			   mapper.save(userTest);
+		} finally {
+		       sqlsession.close();
+		}
 		
 
 		modelCacheManager.clearModelList();
 	}
 
 	public void update(UserModel userTest) throws Exception {
-		String sql = "update testuser set name=? where userId=?";
-		List queryParams = new ArrayList();
-		queryParams.add(userTest.getUsername());
-		queryParams.add(userTest.getUserId());
+		//String sql = "update testuser set name=? where userId=?";
+		//List queryParams = new ArrayList();
+		//queryParams.add(userTest.getUsername());
+		//queryParams.add(userTest.getUserId());
 		
+		SqlSession sqlsession = sqlSessionFactory.openSession();
+		
+		try {
+			   UserRepository mapper = sqlsession.getMapper(UserRepository.class);  
+			   mapper.update(userTest);
+		} finally {
+		       sqlsession.close();
+		}
 
 		modelCacheManager.removeModelFromCache(userTest.getUserId());
 	}
 
 	public void delete(String userId) throws Exception {
-		String sql = "delete from testuser where userId=?";
-		List queryParams = new ArrayList();
-		queryParams.add(userId);
+		//String sql = "delete from testuser where userId=?";
+		//List queryParams = new ArrayList();
+		//queryParams.add(userId);
 		
+		SqlSession sqlsession = sqlSessionFactory.openSession();
+		
+		try {
+			   UserRepository mapper = sqlsession.getMapper(UserRepository.class);  
+			   mapper.delete(userId);
+		} finally {
+		       sqlsession.close();
+		}
 
 		modelCacheManager.removeModelFromCache(userId);
 		modelCacheManager.clearModelList();
