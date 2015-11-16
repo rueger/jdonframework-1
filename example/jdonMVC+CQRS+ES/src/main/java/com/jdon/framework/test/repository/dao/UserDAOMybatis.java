@@ -32,6 +32,7 @@ import com.jdon.framework.test.repository.ModelCacheManager;
 import com.jdon.framework.test.repository.UserRepository;
 //import com.jdon.model.query.JdbcTemp;
 
+
 /**
  * before using this class , you must active database
  * 
@@ -58,8 +59,8 @@ public class UserDAOMybatis implements UserRepository {
 	 * @param constants
 	 * @param cacheManager
 	 */
-	public UserDAOMybatis(ModelCacheManager modelCacheManager,SqlSessionFactory sqlSessionFactory) throws NamingException {
-		this.sqlSessionFactory = sqlSessionFactory;
+	public UserDAOMybatis(ModelCacheManager modelCacheManager,MybatisSqlSessionFactory mybatisSqlSessionFactory) {
+		this.sqlSessionFactory = mybatisSqlSessionFactory.getSqlSessionFactory();
 		this.modelCacheManager = modelCacheManager;
 	}
 
@@ -98,33 +99,18 @@ public class UserDAOMybatis implements UserRepository {
 	@Around
 	public UserModel getUser(String Id) {
 
-		SqlSession session = sqlSessionFactory.openSession();
+		SqlSession sqlsession = sqlSessionFactory.openSession();
 		
-		String GET_FIELD = "select  * from testuser where userId = ?";
-		List queryParams = new ArrayList();
-		queryParams.add(Id);
+        UserModel user;
 		
-		
-		UserModel ret = null;
-
 		try {
-			List list = new ArrayList();
-			Iterator iter = list.iterator();
-			if (iter.hasNext()) {
-
-				Map map = (Map) iter.next();
-				ret = new UserModel();
-				ret.setUsername((String) map.get("NAME"));
-				ret.setUserId((String) map.get("USERID"));
-
-			}
-		} catch (Exception e) {
-			logger.error("getUser" + e);
+			   UserRepository mapper = sqlsession.getMapper(UserRepository.class);  
+			   user = (UserModel) mapper.getUser(Id);
+		} finally {
+		       sqlsession.close();
 		}
-		
 
-		
-		return ret;
+		return user;
 	}
 
 }

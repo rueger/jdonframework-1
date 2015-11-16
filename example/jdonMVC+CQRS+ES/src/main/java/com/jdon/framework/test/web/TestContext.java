@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.jdon.framework.test.test2jspIF;
 import com.jdon.framework.test.domain.UserModel;
 import com.jdon.framework.test.query.QueryIF;
+import com.jdon.framework.test.query.UserQuery;
 import com.jdon.framework.test.repository.UserRepository;
 import com.jdon.framework.test.repository.dao.MybatisSqlSessionFactory;
 import com.jdon.mvc.annotations.In;
@@ -27,6 +28,9 @@ public class TestContext {
 	
 	@In(value = "sqlSessionFactory", type = BeanType.COMPONENT)
 	private  MybatisSqlSessionFactory  mybatisSqlSessionFactory;
+	
+	@In(value = "userQuery", type = BeanType.COMPONENT)
+	private UserQuery userQuery;
 	
 	@Path("/test")
 	public Represent test() {
@@ -113,4 +117,19 @@ public class TestContext {
 		
 		return new Text(userId);
 	}
+	
+	@Path("/test6")
+	public Represent test6() {
+		
+		System.out.println("test6");
+		
+		List<UserModel> userList = userQuery.getUserList();
+		
+		
+		return new Html("/WEB-INF/index.jsp", "userList", userList);
+		
+		
+		
+	}
+	
 }

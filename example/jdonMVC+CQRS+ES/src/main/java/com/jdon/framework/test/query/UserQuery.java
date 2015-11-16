@@ -26,6 +26,7 @@ import com.jdon.annotation.Component;
 import com.jdon.framework.test.domain.UserModel;
 import com.jdon.framework.test.repository.ModelCacheManager;
 import com.jdon.framework.test.repository.UserRepository;
+import com.jdon.framework.test.repository.dao.MybatisSqlSessionFactory;
 import com.jdon.framework.test.web.ResourceManagerContext;
 
 import org.apache.ibatis.session.SqlSession;
@@ -40,9 +41,12 @@ public class UserQuery {
 
 	private final ModelCacheManager modelCacheManager;
 
-	public UserQuery(UserRepository userRepository, ModelCacheManager modelCacheManager) {
+	private final MybatisSqlSessionFactory mybatisSqlSessionFactory;
+	
+	public UserQuery(UserRepository userRepository, ModelCacheManager modelCacheManager,MybatisSqlSessionFactory mybatisSqlSessionFactory) {
 		this.userRepository = userRepository;
 		this.modelCacheManager = modelCacheManager;
+		this.mybatisSqlSessionFactory = mybatisSqlSessionFactory;
 
 	}
 
@@ -69,10 +73,19 @@ public class UserQuery {
 	*/
 	
 	public List getUsers() {
-		List ids = new ArrayList();
-//TODO
 		
-		return ids;
+        SqlSession sqlsession = mybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		
+		List<String> userIdlist = new ArrayList();
+				
+		try {
+			   QueryIF mapper = sqlsession.getMapper(QueryIF.class);  
+			   userIdlist = mapper.getUsersId();
+		} finally {
+		      sqlsession.close();
+		}
+		
+		return userIdlist;
 	}
 
 }

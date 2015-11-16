@@ -26,8 +26,6 @@ public class MybatisSqlSessionFactory{
 	
 	private SqlSessionFactory sqlSessionFactory;
 	
-	private DataSource dataSource;
-	
 	public  MybatisSqlSessionFactory(Constants constants) throws IOException{
 		
 		//XML方式
@@ -38,7 +36,7 @@ public class MybatisSqlSessionFactory{
 		
 		try {
 			Context ic = new InitialContext();
-			this.dataSource = (DataSource) ic.lookup(constants.getJndiname());
+			DataSource dataSource = (DataSource) ic.lookup(constants.getJndiname());
 			
 			TransactionFactory transactionFactory = new JdbcTransactionFactory();
 			Environment environment = new Environment("development", transactionFactory, dataSource);
