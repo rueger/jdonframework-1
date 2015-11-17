@@ -46,7 +46,7 @@ public class UserDAOMybatis implements UserRepository {
 
 	private final static Logger logger = Logger.getLogger(UserDAOMybatis.class);
 	
-	private SqlSessionFactory sqlSessionFactory;
+	private final SqlSessionFactory sqlSessionFactory;
 
 	private final ModelCacheManager modelCacheManager;
 

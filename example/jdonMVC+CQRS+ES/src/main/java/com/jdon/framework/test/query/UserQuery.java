@@ -41,12 +41,12 @@ public class UserQuery {
 
 	private final ModelCacheManager modelCacheManager;
 
-	private final MybatisSqlSessionFactory mybatisSqlSessionFactory;
+	private final SqlSessionFactory sqlSessionFactory;
 	
 	public UserQuery(UserRepository userRepository, ModelCacheManager modelCacheManager,MybatisSqlSessionFactory mybatisSqlSessionFactory) {
 		this.userRepository = userRepository;
 		this.modelCacheManager = modelCacheManager;
-		this.mybatisSqlSessionFactory = mybatisSqlSessionFactory;
+		this.sqlSessionFactory = mybatisSqlSessionFactory.getSqlSessionFactory();
 
 	}
 
@@ -74,7 +74,7 @@ public class UserQuery {
 	
 	public List getUsers() {
 		
-        SqlSession sqlsession = mybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+        SqlSession sqlsession = sqlSessionFactory.openSession();
 		
 		List<String> userIdlist = new ArrayList();
 				
