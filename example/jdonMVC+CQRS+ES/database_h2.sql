@@ -15,7 +15,7 @@ CREATE TABLE upload (
   datas               LONGBLOB,
   size                int(20) NOT NULL default '0',  
   messageId           varchar(20) NOT NULL default '0',
-  creationDate        VARCHAR(15) NOT NULL,
+  creationDate        VARCHAR(25) NOT NULL,
   contentType         varchar(50) default '',
   PRIMARY KEY  (objectId),
 );
