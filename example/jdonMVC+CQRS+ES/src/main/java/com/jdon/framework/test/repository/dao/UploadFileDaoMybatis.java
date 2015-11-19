@@ -27,12 +27,15 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
 
 import com.jdon.annotation.Component;
 import com.jdon.framework.test.Constants;
 import com.jdon.framework.test.domain.UploadFile;
 import com.jdon.framework.test.repository.UploadRepository;
+import com.jdon.framework.test.repository.UserRepository;
 import com.jdon.util.Debug;
 
 //@Component("uploadRepository")
@@ -40,16 +43,11 @@ import com.jdon.util.Debug;
 public class UploadFileDaoMybatis implements UploadRepository {
 	private final static Logger logger = Logger.getLogger(UploadFileDaoMybatis.class);
 
-	
+	private final SqlSessionFactory sqlSessionFactory;
 
-	public UploadFileDaoMybatis(Constants constants) {
-		try {
-			Context ic = new InitialContext();
-			DataSource dataSource = (DataSource) ic.lookup(constants.getJndiname());
-			
-		} catch (Exception slx) {
-			logger.error(slx);
-		}
+	public UploadFileDaoMybatis(Constants constants,MybatisSqlSessionFactory mybatisSqlSessionFactory) {
+		
+		this.sqlSessionFactory = mybatisSqlSessionFactory.getSqlSessionFactory();
 	}
 
 	/*
@@ -82,9 +80,20 @@ public class UploadFileDaoMybatis implements UploadRepository {
 	 * com.jdon.framework.test.repository.dao.UploadRepository#createUploadFile
 	 * (com.jdon.framework.test.domain.UploadFile)
 	 */
-	@Override
+	
 	public void createUploadFile(UploadFile uploadFile) {
 		logger.debug("enter createUploadFile uploadId =" + uploadFile.getId());
+		
+		System.out.println("createUploadFile uploadid = " + uploadFile.getId());
+		
+		SqlSession sqlsession = sqlSessionFactory.openSession();
+		
+		try {
+			   UploadRepository mapper = sqlsession.getMapper(UploadRepository .class);  
+			   mapper.createUploadFile(uploadFile);
+		} finally {
+		       sqlsession.close();
+		}
 		
 
 	}

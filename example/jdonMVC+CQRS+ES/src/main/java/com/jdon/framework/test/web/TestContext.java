@@ -10,9 +10,11 @@ import javax.ws.rs.core.Context;
 import org.apache.ibatis.session.SqlSession;
 
 import com.jdon.framework.test.test2jspIF;
+import com.jdon.framework.test.domain.UploadFile;
 import com.jdon.framework.test.domain.UserModel;
 import com.jdon.framework.test.query.QueryIF;
 import com.jdon.framework.test.query.UserQuery;
+import com.jdon.framework.test.repository.UploadRepository;
 import com.jdon.framework.test.repository.UserRepository;
 import com.jdon.framework.test.repository.dao.MybatisSqlSessionFactory;
 import com.jdon.mvc.annotations.In;
@@ -167,6 +169,35 @@ public class TestContext {
 		
 		
 		return new Text("test8 ok");
+	}
+	
+	@Path("/test9")
+	public Represent test9() throws Exception {
+		
+		System.out.println("test9");
+		
+		UploadFile uploadFile = new UploadFile();
+		String Id = Integer.toString(uploadFile.hashCode());
+		
+		uploadFile.setId(Id);
+		uploadFile.setParentId("1");
+		//uploadFile.setData(file.getFileData());
+		uploadFile.setName("qq.jpg");
+		uploadFile.setContentType("image/jpeg");
+		uploadFile.setDescription("description");
+		uploadFile.setSize(2048);
+		
+		
+		SqlSession sqlsession = mybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		
+		try {
+			   UploadRepository mapper = sqlsession.getMapper(UploadRepository .class);  
+			   mapper.createUploadFile(uploadFile);
+		} finally {
+		       sqlsession.close();
+		}
+		
+		return new Text("test9 ok");
 	}
 	
 }

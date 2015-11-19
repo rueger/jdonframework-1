@@ -20,6 +20,7 @@ import com.jdon.annotation.Component;
 import com.jdon.framework.test.Constants;
 import com.jdon.framework.test.test2jspIF;
 import com.jdon.framework.test.query.QueryIF;
+import com.jdon.framework.test.repository.UploadRepository;
 import com.jdon.framework.test.repository.UserRepository;
 
 @Component("sqlSessionFactory")
@@ -46,6 +47,7 @@ public class MybatisSqlSessionFactory{
 			configuration.addMapper(test2jspIF.class);
 			configuration.addMapper(UserRepository.class);
 			configuration.addMapper(QueryIF.class);
+			configuration.addMapper(UploadRepository.class);
 			
 			this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 			

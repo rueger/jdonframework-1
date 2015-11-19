@@ -15,6 +15,13 @@
  */
 package com.jdon.framework.test.repository;
 
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Update;
+
 import com.jdon.framework.test.domain.UploadFile;
 
 public interface UploadRepository {
@@ -28,6 +35,10 @@ public interface UploadRepository {
 	 * com.jdon.jivejdon.dao.UploadFileDao#createUploadFile(com.jdon.strutsutil
 	 * .file.UploadFile)
 	 */
+	
+    
+	//注creationdate用H2的数据库函数生成
+	@Insert("INSERT INTO upload(objectId, name, description, datas, messageId, size, creationdate, contentType) values(#{id},#{name},#{description},#{data},#{parentId},#{size},CURRENT_TIMESTAMP(),#{contentType})")
 	public abstract void createUploadFile(UploadFile uploadFile);
 
 	/*
