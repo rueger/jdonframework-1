@@ -15,16 +15,32 @@
  */
 package com.jdon.framework.test.repository;
 
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Update;
+
 import com.jdon.framework.test.domain.UserModel;
 
 public interface UserRepository {
 
+	
+    @Insert("insert into testuser (userId , name) values(#{userId}, #{username})")
 	public abstract void save(UserModel userTest) throws Exception;
 
-	public abstract void update(UserModel userTest) throws Exception;
+	@Update("update testuser set name=#{username} where userId=#{userId}")
+    public abstract void update(UserModel userTest) throws Exception;
 
+	@Delete("delete from testuser where userid = #{id}")
 	public abstract void delete(String userId) throws Exception;
 
+	@Results({
+			  @Result(property = "userId", column = "USERID", id = true),
+			  @Result(property = "username", column = "NAME"),
+			})
+	@Select("select * from testuser where userId = #{id}")
 	public abstract UserModel getUser(String Id);
 
 }

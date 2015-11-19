@@ -25,12 +25,12 @@ import com.jdon.container.pico.Startable;
 import com.jdon.controller.cache.CacheManager;
 import com.jdon.domain.model.cache.ModelManager;
 import com.jdon.framework.test.Constants;
-import com.jdon.model.query.PageIteratorSolver;
+//import com.jdon.model.query.PageIteratorSolver;
 
 @Component()
 public class ModelCacheManager implements Startable {
 
-	private PageIteratorSolver pageIteratorSolverOfUser;
+	//private PageIteratorSolver pageIteratorSolverOfUser;
 
 	private final ModelManager modelManager;
 
@@ -39,8 +39,8 @@ public class ModelCacheManager implements Startable {
 	public ModelCacheManager(CacheManager cacheManager, Constants constants, ModelManager modelManager) {
 		try {
 			Context ic = new InitialContext();
-			this.dataSource = (DataSource) ic.lookup(constants.getJndiname());
-			this.pageIteratorSolverOfUser = new PageIteratorSolver(dataSource, cacheManager);
+			//this.dataSource = (DataSource) ic.lookup(constants.getJndiname());
+			//this.pageIteratorSolverOfUser = new PageIteratorSolver(dataSource, cacheManager);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -48,12 +48,14 @@ public class ModelCacheManager implements Startable {
 
 	}
 
+	/*
 	public PageIteratorSolver getPageIteratorSolverOfUser() {
 		return pageIteratorSolverOfUser;
 	}
-
+    */
+	
 	public void clearModelList() {
-		pageIteratorSolverOfUser.clearCache();
+//TODO		pageIteratorSolverOfUser.clearCache();
 	}
 
 	public void removeModelFromCache(Object key) {

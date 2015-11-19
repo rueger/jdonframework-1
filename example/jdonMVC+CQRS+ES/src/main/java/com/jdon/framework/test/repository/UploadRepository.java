@@ -15,10 +15,27 @@
  */
 package com.jdon.framework.test.repository;
 
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Update;
+
 import com.jdon.framework.test.domain.UploadFile;
 
 public interface UploadRepository {
 
+	@Results({
+		      @Result(property = "id", column = "OBJECTID", id = true),
+		      @Result(property = "name", column = "NAME"),
+		      @Result(property = "description", column = "DESCRIPTION"),
+		      @Result(property = "data", column = "DATAS"),
+		      @Result(property = "contentType", column = "CONTENTTYPE"),
+		      @Result(property = "size", column = "SIZE"),
+		      @Result(property = "parentId", column = "MESSAGEID"),
+		    })
+	@Select("select * from UPLOAD where MESSAGEID = #{id}")
 	public abstract UploadFile getUploadFile(String objectId);
 
 	/*
@@ -28,6 +45,10 @@ public interface UploadRepository {
 	 * com.jdon.jivejdon.dao.UploadFileDao#createUploadFile(com.jdon.strutsutil
 	 * .file.UploadFile)
 	 */
+	
+    
+	//注creationdate用H2的数据库函数生成
+	@Insert("INSERT INTO upload(objectId, name, description, datas, messageId, size, creationdate, contentType) values(#{id},#{name},#{description},#{data},#{parentId},#{size},CURRENT_TIMESTAMP(),#{contentType})")
 	public abstract void createUploadFile(UploadFile uploadFile);
 
 	/*
@@ -36,6 +57,8 @@ public interface UploadRepository {
 	 * @see
 	 * com.jdon.jivejdon.dao.UploadFileDao#deleteUploadFile(java.lang.String)
 	 */
+	
+	@Delete("DELETE FROM upload WHERE messageId=#{id}")
 	public abstract void deleteUploadFile(String objectId);
 
 }

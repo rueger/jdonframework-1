@@ -22,11 +22,15 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.jdon.annotation.Component;
-import com.jdon.controller.model.PageIterator;
+//import com.jdon.controller.model.PageIterator;
 import com.jdon.framework.test.domain.UserModel;
 import com.jdon.framework.test.repository.ModelCacheManager;
 import com.jdon.framework.test.repository.UserRepository;
+import com.jdon.framework.test.repository.dao.MybatisSqlSessionFactory;
 import com.jdon.framework.test.web.ResourceManagerContext;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 @Component("userQuery")
 public class UserQuery {
@@ -37,9 +41,12 @@ public class UserQuery {
 
 	private final ModelCacheManager modelCacheManager;
 
-	public UserQuery(UserRepository userRepository, ModelCacheManager modelCacheManager) {
+	private final SqlSessionFactory sqlSessionFactory;
+	
+	public UserQuery(UserRepository userRepository, ModelCacheManager modelCacheManager,MybatisSqlSessionFactory mybatisSqlSessionFactory) {
 		this.userRepository = userRepository;
 		this.modelCacheManager = modelCacheManager;
+		this.sqlSessionFactory = mybatisSqlSessionFactory.getSqlSessionFactory();
 
 	}
 
@@ -56,11 +63,29 @@ public class UserQuery {
 		return list;
 	}
 
+	/*
 	public List getUsers() {
 		String GET_ALL_ITEMS_ALLCOUNT = "select count(1) from testuser ";
 		String GET_ALL_ITEMS = "select userId  from testuser ";
 		PageIterator pageIterator = modelCacheManager.getPageIteratorSolverOfUser().getDatas("", GET_ALL_ITEMS_ALLCOUNT, GET_ALL_ITEMS, 0, 9999999);
 		return Arrays.asList(pageIterator.getKeys());
+	}
+	*/
+	
+	public List getUsers() {
+		
+        SqlSession sqlsession = sqlSessionFactory.openSession();
+		
+		List<String> userIdlist = new ArrayList();
+				
+		try {
+			   QueryIF mapper = sqlsession.getMapper(QueryIF.class);  
+			   userIdlist = mapper.getUsersId();
+		} finally {
+		      sqlsession.close();
+		}
+		
+		return userIdlist;
 	}
 
 }
