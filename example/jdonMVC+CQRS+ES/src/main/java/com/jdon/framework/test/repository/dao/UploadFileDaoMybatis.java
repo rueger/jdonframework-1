@@ -45,7 +45,7 @@ public class UploadFileDaoMybatis implements UploadRepository {
 
 	private final SqlSessionFactory sqlSessionFactory;
 
-	public UploadFileDaoMybatis(Constants constants,MybatisSqlSessionFactory mybatisSqlSessionFactory) {
+	public UploadFileDaoMybatis(MybatisSqlSessionFactory mybatisSqlSessionFactory) {
 		
 		this.sqlSessionFactory = mybatisSqlSessionFactory.getSqlSessionFactory();
 	}
@@ -62,6 +62,16 @@ public class UploadFileDaoMybatis implements UploadRepository {
 		
 		UploadFile ret = null;
 		
+		SqlSession sqlsession = sqlSessionFactory.openSession();
+		
+		try {
+			   UploadRepository mapper = sqlsession.getMapper(UploadRepository.class);  
+			   ret = mapper.getUploadFile(parentId);
+		} finally {
+		       sqlsession.close();
+		}
+		
+				
 		return ret;
 
 	}
@@ -82,14 +92,14 @@ public class UploadFileDaoMybatis implements UploadRepository {
 	 */
 	
 	public void createUploadFile(UploadFile uploadFile) {
-		logger.debug("enter createUploadFile uploadId =" + uploadFile.getId());
+		//logger.debug("enter createUploadFile uploadId =" + uploadFile.getId());
 		
-		System.out.println("createUploadFile uploadid = " + uploadFile.getId());
+		//System.out.println("createUploadFile uploadid = " + uploadFile.getId());
 		
 		SqlSession sqlsession = sqlSessionFactory.openSession();
 		
 		try {
-			   UploadRepository mapper = sqlsession.getMapper(UploadRepository .class);  
+			   UploadRepository mapper = sqlsession.getMapper(UploadRepository.class);  
 			   mapper.createUploadFile(uploadFile);
 		} finally {
 		       sqlsession.close();
@@ -113,13 +123,14 @@ public class UploadFileDaoMybatis implements UploadRepository {
 	 */
 	@Override
 	public void deleteUploadFile(String parentId) {
+
+		SqlSession sqlsession = sqlSessionFactory.openSession();
+		
 		try {
-			String sql = "DELETE FROM upload WHERE messageId=?";
-			List queryParams = new ArrayList();
-			queryParams.add(parentId);
-			
-		} catch (Exception e) {
-			logger.error("deleteAllUploadFile parentId" + parentId + e);
+			   UploadRepository mapper = sqlsession.getMapper(UploadRepository.class);  
+			   mapper.deleteUploadFile(parentId);
+		} finally {
+		       sqlsession.close();
 		}
 
 	}

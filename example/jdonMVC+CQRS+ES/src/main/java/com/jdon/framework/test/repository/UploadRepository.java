@@ -26,6 +26,16 @@ import com.jdon.framework.test.domain.UploadFile;
 
 public interface UploadRepository {
 
+	@Results({
+		      @Result(property = "id", column = "OBJECTID", id = true),
+		      @Result(property = "name", column = "NAME"),
+		      @Result(property = "description", column = "DESCRIPTION"),
+		      @Result(property = "data", column = "DATAS"),
+		      @Result(property = "contentType", column = "CONTENTTYPE"),
+		      @Result(property = "size", column = "SIZE"),
+		      @Result(property = "parentId", column = "MESSAGEID"),
+		    })
+	@Select("select * from UPLOAD where MESSAGEID = #{id}")
 	public abstract UploadFile getUploadFile(String objectId);
 
 	/*
@@ -47,6 +57,8 @@ public interface UploadRepository {
 	 * @see
 	 * com.jdon.jivejdon.dao.UploadFileDao#deleteUploadFile(java.lang.String)
 	 */
+	
+	@Delete("DELETE FROM upload WHERE messageId=#{id}")
 	public abstract void deleteUploadFile(String objectId);
 
 }
