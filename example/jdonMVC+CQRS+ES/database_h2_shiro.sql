@@ -35,3 +35,16 @@ insert into user_roles(username,role_name) values('zhang','role2');
 insert into roles_permissions(role_name,permission) values('role1','user:create');
 
 insert into roles_permissions(role_name,permission) values('role2','user:delete');
+
+insert into users(username,password) values('root','secret');
+insert into users(username,password) values('joe','bob');
+insert into user_roles(username,role_name) values('root','admin');
+insert into user_roles(username,role_name) values('joe','user');
+insert into roles_permissions(role_name,permission) values('admin','dummy:*');
+insert into roles_permissions(role_name,permission) values('user','dummy:user');
+
+
+
+
+
+
