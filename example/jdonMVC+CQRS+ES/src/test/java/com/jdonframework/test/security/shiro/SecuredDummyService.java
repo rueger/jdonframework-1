@@ -18,12 +18,19 @@
  */
 package com.jdonframework.test.security.shiro;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresUser;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 
 import java.sql.Timestamp;
+
+
 
 /**
  * Secured implementation of te dummy service that requires some permissions to execute.
@@ -34,6 +41,16 @@ public class SecuredDummyService implements DummyService {
     @RequiresAuthentication
     @RequiresPermissions("dummy:admin")
     public void change() {
+    	//@RequiresAuthentication begin
+    	if (!SecurityUtils.getSubject().isAuthenticated()) {
+            throw new AuthorizationException("未认证");
+        }
+    	//@RequiresAuthentication end
+    	// @RequiresPermissions begin
+    	if (!SecurityUtils.getSubject().isPermitted("dummy:admin")) {
+            throw new AuthorizationException("未授权");
+        }
+    	// @RequiresPermissions end
         retrieve();
         log("change");
         peek();
@@ -45,16 +62,39 @@ public class SecuredDummyService implements DummyService {
 
     @RequiresGuest
     public void guest() {
+    	//@RequiresUser begin
+    	Subject currentUser = SecurityUtils.getSubject();
+        PrincipalCollection principals = (PrincipalCollection) currentUser.getPrincipals();
+        if (principals != null && !principals.isEmpty()) {
+            //known identity - not a guest:
+            throw new AuthorizationException("@RequiresUser");
+        }
+        //@RequiresUser end
+    	
+    	
         log("guest");
     }
 
     @RequiresUser
     public void peek() {
+    	//@RequiresUser begin
+    	Subject currentUser = SecurityUtils.getSubject();
+        PrincipalCollection principals = currentUser.getPrincipals();
+        if (principals == null || principals.isEmpty()) {
+            //no identity - they're anonymous, not allowed:
+            throw new AuthorizationException("@RequiresUser");
+        }
+    	//@RequiresUser end
         log("peek");
     }
 
     @RequiresPermissions("dummy:user")
     public void retrieve() {
+    	// @RequiresPermissions begin
+    	if (!SecurityUtils.getSubject().isPermitted("dummy:user")) {
+            throw new AuthorizationException("未授权");
+        }
+    	// @RequiresPermissions end
         log("retrieve");
     }
 

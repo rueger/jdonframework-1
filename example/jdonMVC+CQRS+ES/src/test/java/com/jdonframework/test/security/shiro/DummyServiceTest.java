@@ -25,6 +25,7 @@ import org.apache.log4j.SimpleLayout;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.aspectj.AspectjAnnotationsAuthorizingMethodInterceptor;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.config.IniSecurityManagerFactory;
@@ -108,20 +109,20 @@ public class DummyServiceTest {
         SECURED_SERVICE.guest();
     }
 
-    @Test(expected = UnauthenticatedException.class)
+    @Test(expected = AuthorizationException.class)
     public void testGuest_asUser() throws Exception {
         loginAsUser();
         SECURED_SERVICE.guest();
     }
 
-    @Test(expected = UnauthenticatedException.class)
+    @Test(expected = AuthorizationException.class)
     public void testGuest_asAdmin() throws Exception {
         loginAsAdmin();
         SECURED_SERVICE.guest();
     }
 
     // TEST PEEK
-    @Test(expected = UnauthenticatedException.class)
+    @Test(expected = AuthorizationException.class)
     public void testPeek_asAnonymous() throws Exception {
         SECURED_SERVICE.peek();
     }
@@ -139,7 +140,7 @@ public class DummyServiceTest {
     }
 
     // TEST RETRIEVE
-    @Test(expected = UnauthenticatedException.class)
+    @Test(expected = AuthorizationException.class)
     //UnauthenticatedException per SHIRO-146
     public void testRetrieve_asAnonymous() throws Exception {
         SECURED_SERVICE.retrieve();
@@ -158,13 +159,13 @@ public class DummyServiceTest {
     }
 
     // TEST CHANGE
-    @Test(expected = UnauthenticatedException.class)
+    @Test(expected = AuthorizationException.class)
     //UnauthenticatedException per SHIRO-146
     public void testChange_asAnonymous() throws Exception {
         SECURED_SERVICE.change();
     }
 
-    @Test(expected = UnauthorizedException.class)
+    @Test(expected = AuthorizationException.class)
     public void testChange_asUser() throws Exception {
         loginAsUser();
         SECURED_SERVICE.change();
