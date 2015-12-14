@@ -41,16 +41,7 @@ public class SecuredDummyService implements DummyService {
     @RequiresAuthentication
     @RequiresPermissions("dummy:admin")
     public void change() {
-    	//@RequiresAuthentication begin
-    	if (!SecurityUtils.getSubject().isAuthenticated()) {
-            throw new AuthorizationException("未认证");
-        }
-    	//@RequiresAuthentication end
-    	// @RequiresPermissions begin
-    	if (!SecurityUtils.getSubject().isPermitted("dummy:admin")) {
-            throw new AuthorizationException("未授权");
-        }
-    	// @RequiresPermissions end
+    	
         retrieve();
         log("change");
         peek();
@@ -62,14 +53,7 @@ public class SecuredDummyService implements DummyService {
 
     @RequiresGuest
     public void guest() {
-    	//@RequiresUser begin
-    	Subject currentUser = SecurityUtils.getSubject();
-        PrincipalCollection principals = (PrincipalCollection) currentUser.getPrincipals();
-        if (principals != null && !principals.isEmpty()) {
-            //known identity - not a guest:
-            throw new AuthorizationException("@RequiresUser");
-        }
-        //@RequiresUser end
+    	
     	
     	
         log("guest");
@@ -77,24 +61,13 @@ public class SecuredDummyService implements DummyService {
 
     @RequiresUser
     public void peek() {
-    	//@RequiresUser begin
-    	Subject currentUser = SecurityUtils.getSubject();
-        PrincipalCollection principals = currentUser.getPrincipals();
-        if (principals == null || principals.isEmpty()) {
-            //no identity - they're anonymous, not allowed:
-            throw new AuthorizationException("@RequiresUser");
-        }
-    	//@RequiresUser end
+    	
         log("peek");
     }
 
     @RequiresPermissions("dummy:user")
     public void retrieve() {
-    	// @RequiresPermissions begin
-    	if (!SecurityUtils.getSubject().isPermitted("dummy:user")) {
-            throw new AuthorizationException("未授权");
-        }
-    	// @RequiresPermissions end
+    	
         log("retrieve");
     }
 
