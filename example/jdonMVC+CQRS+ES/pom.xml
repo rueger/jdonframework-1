@@ -11,6 +11,7 @@
     <url>http://www.jdon.org</url>
 
     <properties>
+        <warExplodedDirectory>target/exploded/${artifactId}.war</warExplodedDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -101,16 +102,10 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.8.3</version>
         </dependency>
-
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.12</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>
@@ -142,12 +137,12 @@
           </dependency>
           <dependency>
 	     <groupId>org.apache.shiro</groupId>
-	     <artifactId>shiro-core</artifactId>
+	     <artifactId>shiro-web</artifactId>
 	     <version>1.2.4</version>
           </dependency>
           <dependency>
 	     <groupId>org.apache.shiro</groupId>
-	     <artifactId>shiro-core</artifactId>
+	     <artifactId>shiro-aspectj</artifactId>
 	     <version>1.2.4</version>
           </dependency>
           <dependency>
@@ -159,13 +154,63 @@
 	     <groupId>com.alibaba</groupId>
 	     <artifactId>druid</artifactId>
 	     <version>0.2.23</version>
-          </dependency>                                        
+          </dependency>
+          
+          <!-- aspectj -->
+          <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.12</version>
+          </dependency>
+          <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.6.12</version>
+          </dependency>                                      
 
     </dependencies>
   
    <build>
         <finalName>jdonmvc_cqrs_es</finalName>
         <plugins>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <showWeaveInfo>true</showWeaveInfo>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>aspectj-compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.1.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>org.apache.shiro.aspectj</Bundle-SymbolicName>
+                        <Export-Package>org.apache.shiro.aspectj*;version=${project.version}</Export-Package>
+                        <Import-Package>
+                            org.apache.shiro*;version="${shiro.osgi.importRange}",
+                            org.aspectj*;version="[1.6.0, 2.0.0)",
+                            *
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+            
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.0.2</version>
