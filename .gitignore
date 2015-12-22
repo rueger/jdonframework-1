@@ -8,3 +8,8 @@ build
 .project
 main/jdon.log
 target
+gradle
+gradlew
+gradlew.bat
+build.gradle
+settings.gradle
