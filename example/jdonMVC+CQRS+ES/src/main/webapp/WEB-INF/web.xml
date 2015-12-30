@@ -24,6 +24,10 @@
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
     </listener>
+    
+    <listener>
+        <listener-class>com.jdon.container.startup.ServletContainerListener</listener-class>
+    </listener>
 
     <filter>
         <filter-name>ShiroFilter</filter-name>
