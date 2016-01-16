@@ -75,7 +75,7 @@ public class ResourceManagerContext {
 
 	}
 	
-	@Path("/userindex")
+	@Path("/user")
 	public Represent userindex() {
 		logger.debug(" enter index ");
 		List<UserModel> userList = userQuery.getUserList();

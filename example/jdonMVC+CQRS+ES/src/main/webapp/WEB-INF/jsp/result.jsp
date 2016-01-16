@@ -6,6 +6,6 @@
 </head>
 <body bgcolor="#ffffff">
   Operate Successfully!
-return <a href="<%=request.getContextPath() %>/">index</a>
+return <a href="<%=request.getContextPath() %>/user">index</a>
 </body>
 </html>
