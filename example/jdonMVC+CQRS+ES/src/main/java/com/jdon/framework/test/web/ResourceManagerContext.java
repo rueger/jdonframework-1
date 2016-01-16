@@ -70,6 +70,13 @@ public class ResourceManagerContext {
 
 	@Path("/")
 	public Represent index() {
+		
+		return new Html("index.jsp");
+
+	}
+	
+	@Path("/userindex")
+	public Represent userindex() {
 		logger.debug(" enter index ");
 		List<UserModel> userList = userQuery.getUserList();
 		
