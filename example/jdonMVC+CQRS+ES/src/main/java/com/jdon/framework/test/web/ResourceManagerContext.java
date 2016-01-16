@@ -75,21 +75,42 @@ public class ResourceManagerContext {
 		
 
 		
-		return new Html("/WEB-INF/index.jsp", "userList", userList);
+		return new Html("/WEB-INF/jsp/index.jsp", "userList", userList);
 
 	}
 
+	@Path("/result")
+	public Represent result() {
+		
+		return new Html("/WEB-INF/jsp/result.jsp");
+
+	}
+	
+	@Path("/newUser")
+	public Represent newUser() {
+		
+		return new Html("/WEB-INF/jsp/newUser.jsp");
+
+	}
+	
+	@Path("/single_upload")
+	public Represent single_upload() {
+		
+		return new Html("/WEB-INF/jsp/single_upload.jsp");
+
+	}
+	
 	@Path("/user/{userId}")
 	public Represent get(int userId) {
 		UserModel user = getUser(Integer.toString(userId));
-		return new Html("/WEB-INF/editUser.jsp", "user", user);
+		return new Html("/WEB-INF/jsp/editUser.jsp", "user", user);
 	}
 
 	@Path("/users")
 	@POST
 	public Represent post(UserModel user) {
 		if (validate(user))
-			return new Html("/newUser.jsp", "user", user);
+			return new Html("/WEB-INF/jsp/newUser.jsp", "user", user);
 		String userId = Integer.toString(user.hashCode());
 		user.setUserId(userId);
 		roleAssigner.assignDomainEvents(user);
@@ -106,7 +127,7 @@ public class ResourceManagerContext {
 			
 		}
 		user.es.created(new UserCreatedEvent(user, uploadFile));
-		return new State("/result.jsp");
+		return new State("/result");
 	}
 
 	private boolean validate(UserModel user) {
@@ -155,7 +176,7 @@ public class ResourceManagerContext {
 		}
 
 		commandHandler.saveUser(oldUser, new UpdateCommand(user, uploadFile));
-		return new State("/result.jsp");
+		return new State("/result");
 	}
 
 	@Path("/user/{user.userId}")
@@ -163,7 +184,7 @@ public class ResourceManagerContext {
 	public Represent delete(UserModel user) {
 		UserModel oldUser = this.getUser(user.getUserId());
 		oldUser.es.deleted(new UserDeletedEvent(user.getUserId()));
-		return new State("/result.jsp");
+		return new State("/result");
 	}
 	
 	@Path("/showUpload/{user.userId}")
@@ -176,6 +197,6 @@ public class ResourceManagerContext {
 		
 		
 		oldUser.es.deleteUpload(new UploadDeletedEvent(user.getUserId()));
-		return new State("/result.jsp");
+		return new State("/result");
 	}
 }

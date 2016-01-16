@@ -44,7 +44,7 @@ response.setDateHeader("Expires", 0);
 </c:forEach>
 </table>
 
-<a href="newUser.jsp">add</a>
+<a href="newUser">add</a>
 
 </div>
 
