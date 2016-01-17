@@ -43,7 +43,7 @@ user
             </tr>
             <td align="right">pic</td>
             <td>
-              <a href="single_upload.jsp" target="_blank">upload single-file</a>
+              <a href="single_upload" target="_blank">upload single-file</a>
             </td>
             </tr>
 

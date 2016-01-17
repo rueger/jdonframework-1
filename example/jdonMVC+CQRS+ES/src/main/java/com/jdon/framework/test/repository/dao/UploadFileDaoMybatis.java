@@ -57,7 +57,7 @@ public class UploadFileDaoMybatis implements UploadRepository {
 	 * com.jdon.framework.test.repository.dao.UploadRepository#getUploadFile
 	 * (java.lang.String)
 	 */
-	@Override
+	//@Override
 	public UploadFile getUploadFile(String parentId) {
 		
 		UploadFile ret = null;
@@ -121,7 +121,7 @@ public class UploadFileDaoMybatis implements UploadRepository {
 	 * com.jdon.framework.test.repository.dao.UploadRepository#deleteUploadFile
 	 * (java.lang.String)
 	 */
-	@Override
+	//@Override
 	public void deleteUploadFile(String parentId) {
 
 		SqlSession sqlsession = sqlSessionFactory.openSession();

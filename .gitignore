@@ -7,3 +7,7 @@ build
 .classpath
 .project
 main/jdon.log
+target
+gradle
+gradlew
+gradlew.bat
