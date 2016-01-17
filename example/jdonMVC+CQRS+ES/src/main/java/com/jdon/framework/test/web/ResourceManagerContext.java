@@ -25,6 +25,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import com.jdon.domain.dci.RoleAssigner;
 import com.jdon.framework.test.domain.UploadFile;
@@ -75,6 +77,7 @@ public class ResourceManagerContext {
 
 	}
 	
+	@RequiresAuthentication
 	@Path("/user")
 	public Represent userindex() {
 		logger.debug(" enter index ");
@@ -93,6 +96,8 @@ public class ResourceManagerContext {
 
 	}
 	
+	@RequiresAuthentication
+	@RequiresPermissions("dummy:admin")
 	@Path("/newUser")
 	public Represent newUser() {
 		
@@ -107,12 +112,15 @@ public class ResourceManagerContext {
 
 	}
 	
+	@RequiresAuthentication
 	@Path("/user/{userId}")
 	public Represent get(int userId) {
 		UserModel user = getUser(Integer.toString(userId));
 		return new Html("/WEB-INF/jsp/editUser.jsp", "user", user);
 	}
 
+	@RequiresAuthentication
+	@RequiresPermissions("dummy:admin")
 	@Path("/users")
 	@POST
 	public Represent post(UserModel user) {
@@ -158,6 +166,7 @@ public class ResourceManagerContext {
 		return image;
 	}
 
+	@RequiresAuthentication
 	@Path("/user")
 	@PUT
 	public Represent update(UserModel user) {
@@ -186,6 +195,7 @@ public class ResourceManagerContext {
 		return new State("/result");
 	}
 
+	@RequiresAuthentication
 	@Path("/user/{user.userId}")
 	@DELETE
 	public Represent delete(UserModel user) {
@@ -194,6 +204,7 @@ public class ResourceManagerContext {
 		return new State("/result");
 	}
 	
+	@RequiresAuthentication
 	@Path("/showUpload/{user.userId}")
 	@DELETE
 	public Represent deleteUpload(UserModel user) {
