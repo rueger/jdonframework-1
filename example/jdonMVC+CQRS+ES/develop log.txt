@@ -150,5 +150,13 @@ use case
 总结:
 1、重要的业务方法还得用@RequiresPermissions("dummy:admin")加以注解。
 2、用框架提供的AOP功能每个都会不一样，切面编程用aspectj是个通用的方法。
+3、eclipse IDE使用AJDT的Cross References功能方法如下：
+   3.1 安装AJDT
+   3.2 项目Confiture 中选择 Convet to AspectJ Project
+   3.3 项目 Build path 中加入 src\main\aspect
+   3.4 Open with Aspect/Java Editor(默认打开）
+
+
+   
    
    
