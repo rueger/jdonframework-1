@@ -156,6 +156,8 @@ use case
    3.3 项目 Build path 中加入 src\main\aspect
    3.4 Open with Aspect/Java Editor(默认打开）
 
+================================================================================================================
+feature-04：使用本地的jdonframework 6.9-SNAPSHOT和com.jdon.mvc 1.1-SNAPSHOT
 
    
    
