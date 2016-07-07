@@ -156,6 +156,13 @@ use case
    3.3 项目 Build path 中加入 src\main\aspect
    3.4 Open with Aspect/Java Editor(默认打开）
 
+================================================================================================================
+feature-04：使用本地的jdonframework 6.9-SNAPSHOT和com.jdon.mvc 1.1-SNAPSHOT
+
+1、使用mvn install 安装到本地repository，并优先使用的。
+2、@Path从javax.ws.rs.Path改为com.jdon.mvc.annotations.Path，REST方法含在@Path中
+3、mvc.properties中的 initJdon? = true，才能让@Component组件起作用
+
 
    
    

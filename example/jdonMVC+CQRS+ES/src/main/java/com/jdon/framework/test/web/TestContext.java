@@ -3,10 +3,6 @@ package com.jdon.framework.test.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
-
 import org.apache.ibatis.session.SqlSession;
 
 import com.jdon.framework.test.test2jspIF;
@@ -17,21 +13,21 @@ import com.jdon.framework.test.query.UserQuery;
 import com.jdon.framework.test.repository.UploadRepository;
 import com.jdon.framework.test.repository.UserRepository;
 import com.jdon.framework.test.repository.dao.MybatisSqlSessionFactory;
+
+import com.jdon.mvc.annotations.Path;
 import com.jdon.mvc.annotations.In;
 import com.jdon.mvc.ioc.BeanType;
 import com.jdon.mvc.represent.Html;
 import com.jdon.mvc.represent.Represent;
-import com.jdon.mvc.represent.State;
 import com.jdon.mvc.represent.Text;
 
 public class TestContext {
-	private @Context
-	HttpServletRequest request;
+
 	
-	@In(value = "sqlSessionFactory", type = BeanType.COMPONENT)
+	@In(value = "sqlSessionFactory", type = BeanType.component)
 	private  MybatisSqlSessionFactory  mybatisSqlSessionFactory;
 	
-	@In(value = "userQuery", type = BeanType.COMPONENT)
+	@In(value = "userQuery", type = BeanType.component)
 	private UserQuery userQuery;
 	
 	@Path("/test")
@@ -127,7 +123,7 @@ public class TestContext {
 		
 		List<UserModel> userList = userQuery.getUserList();
 		
-		return new Html("/WEB-INF/index.jsp", "userList", userList);
+		return new Html("/WEB-INF/jsp/index.jsp", "userList", userList);
 				
 	}
 	
