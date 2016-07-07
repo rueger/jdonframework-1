@@ -17,18 +17,11 @@ package com.jdon.framework.test.web;
 
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
 
-import com.jdon.framework.test.repository.EntityFactory;
 import com.jdon.mvc.annotations.In;
+import com.jdon.mvc.annotations.Path;
 import com.jdon.mvc.http.FormFile;
-import com.jdon.mvc.ioc.BeanType;
 import com.jdon.mvc.represent.Represent;
 import com.jdon.mvc.represent.Text;
 
@@ -37,27 +30,19 @@ import com.jdon.mvc.represent.Text;
  */
 public class Upload {
 
-	private @Context
-	HttpServletRequest request;
-	private @Context
-	HttpSession session;
-	private @Context
-	HttpServletResponse response;
-	private @Context
-	ServletContext webApp;
+	@In
+	private HttpServletRequest request;
 
-	@In(value = "entityFactory", type = BeanType.COMPONENT)
-	private EntityFactory entityFactory;
 
-	@POST
-	@Path("/singleupload")
+	
+	@Path("post:/singleupload")
 	public Represent upload(FormFile file) {
 		request.getSession().setAttribute("formFile", file);
-		return new Text("你上传文件名是：" + file.getFileName() + " 文件长度是：" + file.getFileSize());
+		return new Text("你上传的文件名是：" + file.getOriginalFilename() + " 文件长度是：" + file.getFileSize());
 	}
 
-	@POST
-	@Path("/multiupload")
+	
+	@Path("post:/multiupload")
 	public Represent upload(List<FormFile> files) {
 		request.getSession().setAttribute("formFiles", files);
 		return new Text("你上传的文件个数是：" + files.size());

@@ -18,17 +18,13 @@ package com.jdon.framework.test.web;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
-
 import org.apache.log4j.Logger;
+
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import com.jdon.domain.dci.RoleAssigner;
+
 import com.jdon.framework.test.domain.UploadFile;
 import com.jdon.framework.test.domain.UserModel;
 import com.jdon.framework.test.domain.command.UpdateCommand;
@@ -37,13 +33,15 @@ import com.jdon.framework.test.domain.event.UserCreatedEvent;
 import com.jdon.framework.test.domain.event.UserDeletedEvent;
 import com.jdon.framework.test.query.UserQuery;
 import com.jdon.framework.test.repository.EntityFactory;
+
+import com.jdon.mvc.annotations.Path;
 import com.jdon.mvc.annotations.In;
 import com.jdon.mvc.http.FormFile;
 import com.jdon.mvc.ioc.BeanType;
 import com.jdon.mvc.represent.Html;
 import com.jdon.mvc.represent.Image;
 import com.jdon.mvc.represent.Represent;
-import com.jdon.mvc.represent.State;
+import com.jdon.mvc.represent.Redirect;
 import com.jdon.mvc.validation.Validation;
 import com.jdon.mvc.validation.infrastructure.NotEmail;
 import com.jdon.mvc.validation.infrastructure.NotEqual;
@@ -52,22 +50,24 @@ import com.jdon.mvc.validation.infrastructure.NotNull;
 public class ResourceManagerContext {
 	private final static Logger logger = Logger.getLogger(ResourceManagerContext.class);
 
-	private @Context
-	HttpServletRequest request;
+	
+	@In
+	private HttpServletRequest request;
 
-	private @Context
-	Validation validation;
+	
+	@In
+	private Validation validation;
 
-	@In(value = "entityFactory", type = BeanType.COMPONENT)
+	@In(value = "entityFactory", type = BeanType.component)
 	private EntityFactory entityFactory;
 
-	@In(value = "userQuery", type = BeanType.COMPONENT)
+	@In(value = "userQuery", type = BeanType.component)
 	private UserQuery userQuery;
 
-	@In(value = "roleAssigner", type = BeanType.COMPONENT)
+	@In(value = "roleAssigner", type = BeanType.component)
 	private RoleAssigner roleAssigner;
 
-	@In(value = "commandHandler", type = BeanType.COMPONENT)
+	@In(value = "commandHandler", type = BeanType.component)
 	private CommandHandler commandHandler;
 
 	@Path("/")
@@ -77,10 +77,12 @@ public class ResourceManagerContext {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequiresAuthentication
 	@Path("/user")
 	public Represent userindex() {
 		logger.debug(" enter index ");
+		
 		List<UserModel> userList = userQuery.getUserList();
 		
 
@@ -113,7 +115,7 @@ public class ResourceManagerContext {
 	}
 	
 	@RequiresAuthentication
-	@Path("/user/{userId}")
+	@Path("/user/:userId")
 	public Represent get(int userId) {
 		UserModel user = getUser(Integer.toString(userId));
 		return new Html("/WEB-INF/jsp/editUser.jsp", "user", user);
@@ -121,8 +123,7 @@ public class ResourceManagerContext {
 
 	@RequiresAuthentication
 	@RequiresPermissions("dummy:admin")
-	@Path("/users")
-	@POST
+	@Path("post:/users")
 	public Represent post(UserModel user) {
 		if (validate(user))
 			return new Html("/WEB-INF/jsp/newUser.jsp", "user", user);
@@ -135,14 +136,14 @@ public class ResourceManagerContext {
 		if (file != null) {
 			uploadFile.setParentId(userId);
 			uploadFile.setData(file.getFileData());
-			uploadFile.setName(file.getFileName());
+			uploadFile.setName(file.getOriginalFilename());
 			uploadFile.setContentType(file.getContentType());
-			uploadFile.setDescription(file.getFileName() + " description");
+			uploadFile.setDescription(file.getOriginalFilename() + " description");
 			uploadFile.setSize(file.getFileSize());
 			
 		}
 		user.es.created(new UserCreatedEvent(user, uploadFile));
-		return new State("/result");
+		return new Redirect("/result");
 	}
 
 	private boolean validate(UserModel user) {
@@ -167,12 +168,11 @@ public class ResourceManagerContext {
 	}
 
 	@RequiresAuthentication
-	@Path("/user")
-	@PUT
+	@Path("put:/user")
 	public Represent update(UserModel user) {
 		UserModel userold = getUser(user.getUserId());
 		if (userold == null)
-			return new State("/");
+			return new Redirect("/");
 
 		UserModel oldUser = this.getUser(user.getUserId());
 		FormFile file = (FormFile) request.getSession().getAttribute("formFile");
@@ -184,29 +184,28 @@ public class ResourceManagerContext {
 		if (file != null) {
 			uploadFile.setParentId(oldUser.getUserId());
 			uploadFile.setData(file.getFileData());
-			uploadFile.setName(file.getFileName());
+			uploadFile.setName(file.getOriginalFilename());
 			uploadFile.setContentType(file.getContentType());
-			uploadFile.setDescription(file.getFileName() + " description");
+			uploadFile.setDescription(file.getOriginalFilename() + " description");
 			uploadFile.setSize(file.getFileSize());
 			
 		}
 
 		commandHandler.saveUser(oldUser, new UpdateCommand(user, uploadFile));
-		return new State("/result");
+		return new Redirect("/result");
 	}
 
 	@RequiresAuthentication
-	@Path("/user/{user.userId}")
-	@DELETE
+	@Path("delete:/user/:userId")
 	public Represent delete(UserModel user) {
 		UserModel oldUser = this.getUser(user.getUserId());
 		oldUser.es.deleted(new UserDeletedEvent(user.getUserId()));
-		return new State("/result");
+		return new Redirect("/result");
 	}
 	
+	
 	@RequiresAuthentication
-	@Path("/showUpload/{user.userId}")
-	@DELETE
+	@Path("delete:/showUpload/:userId")
 	public Represent deleteUpload(UserModel user) {
 		UserModel oldUser = this.getUser(user.getUserId());
 		
@@ -215,6 +214,7 @@ public class ResourceManagerContext {
 		
 		
 		oldUser.es.deleteUpload(new UploadDeletedEvent(user.getUserId()));
-		return new State("/result");
+		return new Redirect("/result");
 	}
+	
 }
