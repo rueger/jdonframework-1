@@ -163,7 +163,8 @@ feature-04：使用本地的jdonframework 6.9-SNAPSHOT和com.jdon.mvc 1.1-SNAPSH
 2、@Path从javax.ws.rs.Path改为com.jdon.mvc.annotations.Path，REST方法含在@Path中
 3、mvc.properties中的 initJdon? = true，才能让@Component组件起作用
 
-
+===============================================================================================================
+feature-05：增加应用程序层
    
    
    
