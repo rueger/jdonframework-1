@@ -1,3 +1,6 @@
+drop table if exists testuser;
+drop table if exists upload;
+
 create table testuser (
        userId           char(20) not null,
        name             varchar(20) null,
